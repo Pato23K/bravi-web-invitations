@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+/*
+ * Paleta base de BRAVI (marfil y champaña).
+ * Cada evento la sobreescribe desde src/config/invitation.ts (plan Esencial en adelante)
+ * mediante themeToCssVars(). Mantener estos valores iguales a DEFAULT_THEME en src/lib/theme.ts.
+ */
+:root {
+  --primary: #8c7355;
+  --accent: #c8b28a;
+  --background: #faf7f1;
+  --foreground: #3f372d;
+  --surface: #ffffff;
+  --on-primary: #ffffff;
+}
+
+/* Expone las variables como utilidades de Tailwind: bg-primary, text-accent, border-accent/40, etc. */
+@theme inline {
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-on-primary: var(--on-primary);
+
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-script: var(--font-pinyon), "Pinyon Script", cursive;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-serif);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+/* Oculta la barra de scroll en carruseles horizontales sin perder el desplazamiento. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
