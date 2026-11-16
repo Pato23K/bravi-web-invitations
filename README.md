@@ -57,13 +57,42 @@ The project will follow a component-based architecture designed for:
 
 ## Development Status
 
-**Status:** Initial setup
+**Status:** Master Template base (Elite plan) in place
 
-The project is currently in its initial development phase.
+All 10 modular components are implemented inside a single Master Template. Each section is gated by plan, so lower plans hide (or, in preview mode, lock) the sections they don't include. Sample media in `public/` are placeholders to be replaced per event.
 
 ## Getting Started
 
-Installation and development instructions will be added once the Next.js application has been initialized.
+Requirements: Node.js 20.9 or newer.
+
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:3000. In development you can switch plans from the demo bar at the top, or with the URL:
+
+| URL | Result |
+| --- | --- |
+| `/?plan=express` | Only Express sections |
+| `/?plan=esencial` | Express + Esencial |
+| `/?plan=signature` | Esencial + Signature |
+| `/?plan=elite` | Everything |
+| `/?plan=express&preview=1` | Express, with locked previews of the sections from higher plans |
+
+Other scripts: `npm run typecheck`, `npm run build`, `npm start`.
+
+### Where to change things
+
+- **Event data and contracted plan:** `src/config/invitation.ts`
+- **Which plan includes each section:** `FEATURE_MIN_PLAN` in `src/config/plans.ts`
+- **Section order:** `src/components/InvitationTemplate.tsx`
+- **Default color palette:** `src/app/globals.css` and `src/lib/theme.ts`
+- **Media:** `public/media` (hero video, music) and `public/images` (gallery, hotels)
+
+Demo mode (`?plan=` / `?preview=1`) is always on in `npm run dev`. In production it is only enabled with `BRAVI_DEMO_MODE=true` (see `.env.example`), so guests can't unlock sections by editing the URL.
+
+See `CLAUDE.md` for the full architecture and coding rules.
 
 ## License
 
