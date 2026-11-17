@@ -21,14 +21,15 @@ function legacyCopy(text: string): boolean {
   textarea.style.opacity = "0";
   document.body.appendChild(textarea);
   textarea.select();
-  const ok = document.execCommand("copy");
-  document.body.removeChild(textarea);
-  return ok;
+  try { return document.execCommand("copy"); }
+  catch { return false; }
+  finally { textarea.remove(); }
 }
 
 /** Comp. 8 · Plan Signature. Copia la CLABE con navigator.clipboard.writeText y muestra un Toast. */
 export function SmartCopyClabe({ clabe, toastMessage = "CLABE copiada al portapapeles" }: SmartCopyClabeProps) {
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState(false);
   const timerRef = useRef<number | undefined>(undefined);
   const digits = clabeDigits(clabe);
 
@@ -46,6 +47,7 @@ export function SmartCopyClabe({ clabe, toastMessage = "CLABE copiada al portapa
     } catch {
       ok = legacyCopy(digits);
     }
+    setError(!ok);
     if (!ok) return;
 
     setCopied(true);
@@ -69,6 +71,7 @@ export function SmartCopyClabe({ clabe, toastMessage = "CLABE copiada al portapa
         )}
       </button>
       <span className="mt-2 block text-xs text-foreground/55">Toca el número para copiarlo</span>
+      {error && <p role="status" className="mt-2 text-sm">No se pudo copiar. Selecciona este número manualmente: <span className="select-all">{digits}</span></p>}
       <Toast message={toastMessage} visible={copied} />
     </>
   );

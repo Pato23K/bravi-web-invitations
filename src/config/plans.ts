@@ -12,6 +12,8 @@ export const PLANS = ["express", "esencial", "signature", "elite"] as const;
 
 export type PlanId = (typeof PLANS)[number];
 
+export const PLAN_PRICES: Record<PlanId, number> = { express: 390, esencial: 690, signature: 1190, elite: 1890 };
+
 export const PLAN_LABELS: Record<PlanId, string> = {
   express: "Express",
   esencial: "Esencial",
@@ -29,6 +31,7 @@ export const FEATURE_MIN_PLAN = {
   customTheme: "esencial",
   location: "esencial",
   giftRegistry: "esencial",
+  story: "esencial",
   // Fase 3 · Signature
   audio: "signature",
   gallery: "signature",
@@ -49,6 +52,7 @@ export const FEATURE_LABELS: Record<FeatureId, string> = {
   customTheme: "Paleta de colores personalizada",
   location: "Ubicaciones y mapas",
   giftRegistry: "Mesa de regalos",
+  story: "Historia del evento",
   audio: "Música de fondo",
   gallery: "Galería de fotos",
   dressCode: "Código de vestimenta",

@@ -18,9 +18,17 @@ export function whatsappUrl(phone: string, message: string): string {
 }
 
 export function googleMapsUrl({ lat, lng }: Coordinates): string {
-  return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${lat},${lng}`)}`;
 }
 
 export function wazeUrl({ lat, lng }: Coordinates): string {
-  return `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
+  return `https://waze.com/ul?ll=${encodeURIComponent(`${lat},${lng}`)}&navigate=yes`;
+}
+
+/** Solo permite navegación web; una configuración no puede insertar javascript: o data:. */
+export function safeExternalUrl(value: string): string | undefined {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:" ? url.href : undefined;
+  } catch { return undefined; }
 }

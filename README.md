@@ -99,3 +99,17 @@ See `CLAUDE.md` for the full architecture and coding rules.
 Proprietary project. All rights reserved.
 
 Developed for BRAVI.
+
+## Plantillas y personalización
+
+La plantilla maestra ahora ofrece **Romantic Classic**, **Modern Minimal** y **Festive**, con los mismos módulos funcionales y permisos por plan.
+
+- Estudio de pruebas: `/demo` (desarrollo; en producción requiere `BRAVI_DEMO_MODE=true` al compilar).
+- Ejemplos públicos: `/invitaciones/boda`, `/invitaciones/quince`, `/invitaciones/encuentro`.
+- Registro de invitaciones: `src/config/examples.ts`.
+- Estilos de plantilla: `src/config/templates.ts`.
+- Orden y ocultamiento: `sectionOrder` y `hiddenSections` en la configuración del cliente.
+- Guía completa en español: [CUSTOMIZATION.md](CUSTOMIZATION.md).
+- Pruebas: `npm test`, `npm run typecheck`, `npm run build`; navegador: `tests/browser.cjs`.
+
+Los medios heredados son marcadores de posición y los contactos/cuentas de demostración son deliberadamente inválidos. Se deben sustituir antes de entregar una invitación a un cliente.

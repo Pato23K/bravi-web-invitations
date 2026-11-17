@@ -1,4 +1,5 @@
-import Image from "next/image";
+import { SafeImage } from "@/components/common/SafeImage";
+import { safeExternalUrl } from "@/lib/deep-links";
 import { IconExternal, IconMapPin } from "@/components/common/icons";
 import { SectionHeading } from "@/components/common/SectionHeading";
 import type { Accommodation } from "@/types/invitation";
@@ -25,7 +26,7 @@ export function AccommodationCards({ hotels, title = "Hospedaje" }: Accommodatio
             className="flex w-[78%] shrink-0 snap-start flex-col overflow-hidden rounded-3xl border border-accent/40 bg-surface shadow-sm"
           >
             <div className="relative aspect-[4/3] bg-accent/20">
-              <Image src={hotel.imageSrc} alt={hotel.name} fill sizes="(max-width: 448px) 78vw, 340px" className="object-cover" />
+              <SafeImage src={hotel.imageSrc} alt={hotel.name} fill sizes="(max-width: 767px) 78vw, 450px" className="object-cover" />
             </div>
 
             <div className="flex flex-1 flex-col p-5">
@@ -44,7 +45,7 @@ export function AccommodationCards({ hotels, title = "Hospedaje" }: Accommodatio
               )}
 
               <a
-                href={hotel.bookingUrl}
+                href={safeExternalUrl(hotel.bookingUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm uppercase tracking-[0.18em] text-on-primary active:scale-[0.98]"

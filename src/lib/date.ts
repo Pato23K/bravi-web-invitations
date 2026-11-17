@@ -4,6 +4,9 @@
  */
 export function formatEventDate(isoDate: string, timeZone: string, locale = "es-MX") {
   const date = new Date(isoDate);
+  if (!/(?:Z|[+-]\d{2}:\d{2})$/.test(isoDate) || !Number.isFinite(date.getTime())) {
+    throw new Error("PERSONALIZAR: event.date debe ser una fecha ISO válida con zona horaria explícita.");
+  }
 
   const fullDate = new Intl.DateTimeFormat(locale, {
     weekday: "long",

@@ -9,9 +9,13 @@ import type { InvitationConfig } from "@/types/invitation";
  */
 export const invitation: InvitationConfig = {
   plan: "elite",
+  // PERSONALIZAR: cambia la identidad visual sin modificar los módulos funcionales.
+  template: "romantic-classic",
+  design: { heroOverlay: 0.5, openingDuration: "1200ms" },
   hiddenSections: [],
+  story: { title: "Todo comenzó con un sí", text: "Una conversación, muchos viajes y pequeños momentos nos trajeron hasta aquí. Hoy elegimos seguir construyendo nuestra historia, rodeados de las personas que queremos. Historia ficticia de demostración." },
 
-  // Se aplica a partir del plan Esencial. En Express se usa la paleta base BRAVI.
+  // PERSONALIZAR: paleta del cliente desde Esencial; Express usa los colores de su plantilla.
   theme: {
     primary: "#4a5a72",
     accent: "#c2ab7f",
@@ -24,6 +28,7 @@ export const invitation: InvitationConfig = {
   event: {
     type: "Nuestra boda",
     hosts: ["Sofía", "Andrés"],
+    // PERSONALIZAR: fecha real con desplazamiento UTC explícito y zona IANA coherente.
     date: "2027-06-12T17:00:00-06:00",
     timeZone: "America/Mexico_City",
     welcomeMessage: "Queremos celebrar contigo el comienzo de nuestra historia.",
@@ -36,7 +41,8 @@ export const invitation: InvitationConfig = {
   },
 
   rsvp: {
-    phone: "52 1 55 0000 0000",
+    // PERSONALIZAR: sustituye los ceros por el WhatsApp del cliente con lada de país.
+    phone: "000000000000",
     message: "¡Hola! Confirmo mi asistencia a la boda de Sofía y Andrés. Mi nombre es:",
     deadline: "Por favor confirma antes del 1 de mayo de 2027",
   },
@@ -66,11 +72,10 @@ export const invitation: InvitationConfig = {
     bankAccount: {
       bank: "Banco Ejemplo",
       holder: "Sofía Ejemplo Pérez",
-      clabe: "012180001234567897",
+      clabe: "000000000000000000",
     },
     stores: [
-      { name: "Liverpool", url: "https://mesaderegalos.liverpool.com.mx/", eventCode: "50000000" },
-      { name: "Palacio de Hierro", url: "https://www.elpalaciodehierro.com/mesa-de-regalos", eventCode: "12345" },
+      { name: "Mesa de regalos de ejemplo", url: "https://example.com/regalos", eventCode: "DEMO" },
     ],
   },
 

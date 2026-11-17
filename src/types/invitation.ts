@@ -1,9 +1,30 @@
 import type { FeatureId, PlanId } from "@/config/plans";
 
+export type TemplateId = "romantic-classic" | "modern-minimal" | "festive";
+export type SectionId = Exclude<FeatureId, "customTheme" | "smartCopyClabe" | "audio">;
+
+/** PERSONALIZAR: tokens compartidos por todas las secciones, sin editar componentes. */
+export interface DesignTokens {
+  headingFont?: string;
+  bodyFont?: string;
+  titleSize?: string;
+  sectionSpace?: string;
+  radius?: string;
+  buttonRadius?: string;
+  borderWidth?: string;
+  shadow?: string;
+  animationDuration?: string;
+  openingDuration?: string;
+  heroOverlay?: number;
+  contentWidth?: string;
+}
+
 /** Colores del evento. Se convierten en variables CSS (--primary, --accent, ...). */
 export interface ThemePalette {
   /** Botones y textos destacados. */
   primary: string;
+  /** Detalles secundarios; por defecto usa accent. */
+  secondary?: string;
   /** Líneas, bordes y detalles decorativos. */
   accent: string;
   /** Fondo general de la invitación. */
@@ -31,11 +52,12 @@ export interface EventInfo {
 
 export interface HeroConfig {
   /** Ruta del MP4 (en /public o URL externa). */
-  videoSrc: string;
+  videoSrc?: string;
   /** Imagen que se ve mientras carga el video. */
   posterSrc?: string;
   /** Texto pequeño sobre los nombres. Ej. "Nos casamos". */
   eyebrow?: string;
+  phrase?: string;
 }
 
 export interface RsvpConfig {
@@ -133,17 +155,24 @@ export interface Accommodation {
  */
 export interface InvitationConfig {
   plan: PlanId;
+  template?: TemplateId;
+  opening?: boolean;
+  decorations?: "botanical" | "geometric" | "stars" | "none";
+  design?: DesignTokens;
+  sectionOrder?: SectionId[];
+  galleryTitle?: string;
+  story?: { title: string; text: string };
   /** Apartados que el cliente no quiere aunque su plan los incluya. */
   hiddenSections?: FeatureId[];
-  theme: ThemePalette;
+  theme?: Partial<ThemePalette>;
   event: EventInfo;
   hero: HeroConfig;
   rsvp: RsvpConfig;
-  locations: Venue[];
-  giftRegistry: GiftRegistryConfig;
-  audio: AudioConfig;
-  gallery: GalleryPhoto[];
-  dressCode: DressCodeConfig;
-  itinerary: ItineraryItem[];
-  accommodations: Accommodation[];
+  locations?: Venue[];
+  giftRegistry?: GiftRegistryConfig;
+  audio?: AudioConfig;
+  gallery?: GalleryPhoto[];
+  dressCode?: DressCodeConfig;
+  itinerary?: ItineraryItem[];
+  accommodations?: Accommodation[];
 }

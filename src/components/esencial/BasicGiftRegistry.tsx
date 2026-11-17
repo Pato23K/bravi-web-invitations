@@ -2,6 +2,7 @@ import { IconExternal, IconGift } from "@/components/common/icons";
 import { SectionHeading } from "@/components/common/SectionHeading";
 import { SmartCopyClabe } from "@/components/signature/SmartCopyClabe";
 import { formatClabe } from "@/lib/clabe";
+import { safeExternalUrl } from "@/lib/deep-links";
 import type { GiftRegistryConfig } from "@/types/invitation";
 
 export interface BasicGiftRegistryProps extends GiftRegistryConfig {
@@ -52,7 +53,7 @@ export function BasicGiftRegistry({ message, bankAccount, stores, smartCopy }: B
             {stores.map((store) => (
               <a
                 key={store.name}
-                href={store.url}
+                href={safeExternalUrl(store.url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex w-full items-center justify-between gap-3 rounded-full border border-primary px-5 py-3 text-left text-primary transition-colors active:bg-primary active:text-on-primary"

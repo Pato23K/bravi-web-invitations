@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SafeImage } from "@/components/common/SafeImage";
 import { useEffect, useRef, useState } from "react";
 import { SectionHeading } from "@/components/common/SectionHeading";
 import type { GalleryPhoto } from "@/types/invitation";
@@ -25,7 +25,7 @@ export function PhotoGallery({ photos, title = "Nuestra historia" }: PhotoGaller
   // Marca como activa la foto que está centrada en pantalla.
   useEffect(() => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track || !("IntersectionObserver" in window)) return;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -41,7 +41,7 @@ export function PhotoGallery({ photos, title = "Nuestra historia" }: PhotoGaller
   }, [items.length]);
 
   const goTo = (index: number) => {
-    slideRefs.current[index]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    slideRefs.current[index]?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "nearest", inline: "center" });
   };
 
   if (items.length === 0) return null;
@@ -68,13 +68,12 @@ export function PhotoGallery({ photos, title = "Nuestra historia" }: PhotoGaller
             aria-roledescription="diapositiva"
             aria-label={`${index + 1} de ${items.length}`}
           >
-            <Image
+            <SafeImage
               src={photo.src}
               alt={photo.alt}
               fill
-              sizes="(max-width: 448px) 86vw, 385px"
+              sizes="(max-width: 767px) 86vw, 450px"
               className="object-cover"
-              priority={index === 0}
             />
           </li>
         ))}
@@ -88,7 +87,7 @@ export function PhotoGallery({ photos, title = "Nuestra historia" }: PhotoGaller
             onClick={() => goTo(index)}
             aria-label={`Ver foto ${index + 1}`}
             aria-current={index === active}
-            className={`h-2 rounded-full transition-all ${
+            className={`min-h-11 min-w-11 rounded-full border-8 border-background transition-all ${
               index === active ? "w-6 bg-primary" : "w-2 bg-accent/60"
             }`}
           />
