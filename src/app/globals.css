@@ -76,7 +76,9 @@ body {
 .scroll-reveal { opacity: 1; transform: none; transition: opacity var(--inv-motion), transform var(--inv-motion); }
 .scroll-reveal.reveal-pending { opacity: 0; transform: translateY(22px); }
 .invitation-cover { min-height: 760px; height: 100svh; position: relative; isolation: isolate; display: grid; place-items: center; overflow: hidden; perspective: 1400px; background: var(--background); }
-.cover-door { position: absolute; inset-block: 0; width: 50%; z-index: -1; background: var(--background); border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); transition: transform var(--inv-opening); }
+.cover-door { position: absolute; inset-block: 0; width: 50%; z-index: -1; background: var(--background); border: 1px solid transparent; transition: transform var(--inv-opening); }
+/* El borde de las puertas solo se ve al abrir; cerrado cruzaría los nombres por el centro. */
+.is-open .cover-door { border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
 .cover-door-left { left: 0; transform-origin: left; }
 .cover-door-right { right: 0; transform-origin: right; }
 .cover-card { position: relative; width: min(86%, 580px); padding: 3rem 1.4rem; text-align: center; border: 1px solid var(--accent); outline: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); outline-offset: 9px; transition: opacity var(--inv-motion), transform var(--inv-opening); }
@@ -107,7 +109,6 @@ body {
 .invitation[data-template='festive'] h2 { font-style: italic; font-weight: 600; }
 .invitation[data-template='festive'] .scroll-reveal:nth-child(even) { background: color-mix(in srgb, var(--accent) 8%, var(--background)); }
 .invitation[data-plan='express'] { --inv-space: 2rem; }
-.invitation[data-plan='express'] #inicio { height: 70svh; min-height: 450px; }
 .demo-toolbar { position: relative; z-index: 70; background: #182923; color: #f6f4ef; padding: 1rem clamp(1rem, 4vw, 4rem); font: 12px Arial, sans-serif; }
 .demo-toolbar summary { cursor: pointer; padding-block: .5rem; letter-spacing: .08em; }
 .demo-fields { display: flex; flex-wrap: wrap; align-items: end; gap: .8rem; padding-top: 1rem; }

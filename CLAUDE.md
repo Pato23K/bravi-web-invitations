@@ -38,22 +38,34 @@ BRAVI es una plataforma web modular de invitaciones digitales interactivas para 
 ```
 src/
   app/
-    layout.tsx            # Fuentes (Cormorant Garamond + Pinyon Script) y metadatos
-    page.tsx              # Vista principal; modo demo con ?plan= y ?preview=1
-    globals.css           # Tailwind v4 + variables CSS del tema
+    layout.tsx                  # Fuentes (Cormorant Garamond + Pinyon Script) y metadatos
+    page.tsx                    # "/" → DemoPage (con barra de demo solo en modo demo)
+    demo/page.tsx               # "/demo" → estudio de invitaciones (404 fuera de modo demo)
+    invitaciones/[slug]/page.tsx  # "/invitaciones/<clave>" → invitación pública de un cliente
+    globals.css                 # Tailwind v4 + variables CSS + estilos de plantillas
   config/
-    plans.ts              # Planes, apartado → plan mínimo, lógica de bloqueo
-    invitation.ts         # Datos del evento (ejemplo Elite con todo lleno)
-  types/invitation.ts     # Interfaces de la configuración
-  lib/                    # deep-links, fechas, tema, CLABE, modo demo
+    plans.ts                    # Planes, precios, apartado → plan mínimo, lógica de bloqueo
+    templates.ts                # Plantillas visuales (romantic-classic, modern-minimal, festive)
+    examples.ts                 # Registro de invitaciones por clave (boda, quince, encuentro)
+    invitation.ts               # Datos del evento de ejemplo (boda, Elite con todo lleno)
+  types/invitation.ts           # Interfaces de la configuración (InvitationConfig, DesignTokens…)
+  lib/                          # deep-links, fechas, tema, CLABE, modo demo
   components/
-    InvitationTemplate.tsx  # Ensambla todos los apartados con <PlanGate>
-    common/               # PlanGate, LockedSection, PlanSwitcher, CoverIntro, Toast, íconos
-    express/              # HeroVideo, EventCountdown, RsvpButton
-    esencial/             # LocationMaps, BasicGiftRegistry
-    signature/            # GlobalAudioPlayer, PhotoGallery, DressCode, SmartCopyClabe
-    elite/                # EventItineraryTimeline, AccommodationCards
+    InvitationTemplate.tsx      # Ensambla los apartados con <PlanGate> según sectionOrder
+    DemoPage.tsx                # Resuelve evento, plantilla, plan y vista para "/" y "/demo"
+    common/                     # PlanGate, LockedSection, PlanSwitcher, CoverIntro, ScrollReveal, SafeImage, Toast, íconos
+    express/                    # HeroVideo, HeroMedia, EventCountdown, RsvpButton
+    esencial/                   # LocationMaps, BasicGiftRegistry
+    signature/                  # GlobalAudioPlayer, PhotoGallery, DressCode, SmartCopyClabe
+    elite/                      # EventItineraryTimeline, AccommodationCards
+tests/                          # core.cjs (npm test), browser.cjs, production.cjs
 ```
+
+### Invitaciones, plantillas y personalización
+- Cada cliente es una entrada en `invitations` (`src/config/examples.ts`); su URL pública es `/invitaciones/<clave>`.
+- `template` elige la plantilla visual de `src/config/templates.ts`; `theme` (plan Esencial+) y `design` sobreescriben colores y tokens.
+- `sectionOrder` reordena apartados; un apartado sin datos no se muestra aunque el plan lo incluya.
+- Guía detallada de personalización en `CUSTOMIZATION.md`.
 
 ### Sistema de planes (cómo se bloquean los apartados)
 - La plantilla siempre contiene todo el plan Elite. Cada apartado se envuelve en `<PlanGate feature="...">` dentro de `InvitationTemplate.tsx`.
@@ -66,9 +78,9 @@ src/
 1. Crear el componente en la carpeta del plan (`src/components/<plan>/`).
 2. Agregar su id en `FEATURE_MIN_PLAN` y `FEATURE_LABELS` (`src/config/plans.ts`).
 3. Agregar sus datos a `InvitationConfig` (`src/types/invitation.ts`) y a `src/config/invitation.ts`.
-4. Insertarlo en `InvitationTemplate.tsx` envuelto en `<PlanGate>`.
+4. Agregar su id a `SectionId`, a `DEFAULT_SECTION_ORDER` y al objeto `sections` de `InvitationTemplate.tsx` (ahí se envuelve en `<PlanGate>`).
 
 ## ✅ Protocolo de Verificación
-1. `npm run typecheck` (equivale a `npx tsc --noEmit`) sin errores.
+1. `npm run typecheck` (equivale a `npx tsc --noEmit`) y `npm test` sin errores.
 2. Solo los componentes interactivos llevan `'use client'`.
 3. Inspección con Playwright MCP en 390×844 y 412×915 sin scroll horizontal, revisando cada plan con `?plan=` y `?preview=1`.

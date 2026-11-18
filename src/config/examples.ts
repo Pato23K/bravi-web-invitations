@@ -7,7 +7,7 @@ export const invitations: Record<string, InvitationConfig> = {
   quince: {
     ...invitation, template: "festive", theme: undefined,
     event: { type: "Mis XV años", hosts: ["Valentina"], date: "2027-09-18T18:00:00-06:00", timeZone: "America/Mexico_City", welcomeMessage: "Quince años de sueños, una noche para compartirlos." },
-    hero: { posterSrc: "/images/galeria-3.jpg", eyebrow: "Una noche para brillar", phrase: "Mi mejor recuerdo será celebrarlo contigo." },
+    hero: { posterSrc: "/media/hero-poster.jpg", eyebrow: "Una noche para brillar", phrase: "Mi mejor recuerdo será celebrarlo contigo." },
     rsvp: { phone: "000000000000", message: "DEMO: Me gustaría asistir a los XV de Valentina. Mi nombre es:", deadline: "Confirma antes del 1 de septiembre de 2027" },
     galleryTitle: "Mis recuerdos favoritos",
     story: { title: "Un nuevo capítulo", text: "De los primeros sueños a una noche llena de ilusión. Gracias por formar parte de mis recuerdos. Historia ficticia de demostración." },
