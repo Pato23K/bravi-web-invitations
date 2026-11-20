@@ -19,8 +19,9 @@ function firstValue(value: SearchParamValue): string | undefined {
 export function resolveDemoOverrides(
   params: Record<string, SearchParamValue>,
   contractedPlan: PlanId,
+  enabled = isDemoMode(),
 ): { plan: PlanId; preview: boolean; demo: boolean } {
-  if (!isDemoMode()) {
+  if (!enabled) {
     return { plan: contractedPlan, preview: false, demo: false };
   }
 

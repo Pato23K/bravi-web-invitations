@@ -75,29 +75,6 @@ body {
 .media-fallback > :first-child { font-size: 4rem; }
 .scroll-reveal { opacity: 1; transform: none; transition: opacity var(--inv-motion), transform var(--inv-motion); }
 .scroll-reveal.reveal-pending { opacity: 0; transform: translateY(22px); }
-.invitation-cover { min-height: 760px; height: 100svh; position: relative; isolation: isolate; display: grid; place-items: center; overflow: hidden; perspective: 1400px; background: var(--background); }
-.cover-door { position: absolute; inset-block: 0; width: 50%; z-index: -1; background: var(--background); border: 1px solid transparent; transition: transform var(--inv-opening); }
-/* El borde de las puertas solo se ve al abrir; cerrado cruzaría los nombres por el centro. */
-.is-open .cover-door { border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
-.cover-door-left { left: 0; transform-origin: left; }
-.cover-door-right { right: 0; transform-origin: right; }
-.cover-card { position: relative; width: min(86%, 580px); padding: 3rem 1.4rem; text-align: center; border: 1px solid var(--accent); outline: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); outline-offset: 9px; transition: opacity var(--inv-motion), transform var(--inv-opening); }
-.cover-kicker { font-family: var(--inv-body); text-transform: uppercase; font-size: .6rem; letter-spacing: .3em; }
-.cover-names { font-size: clamp(3.4rem, 6vw, 5.5rem); line-height: 1.2; color: var(--primary); }
-.cover-seal { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 2rem auto 0; min-width: 140px; min-height: 90px; border-radius: 50%; background: var(--primary); color: var(--on-primary); box-shadow: 0 5px 0 color-mix(in srgb, var(--primary) 75%, black), 0 12px 20px #0002; cursor: pointer; font-family: var(--inv-heading); font-size: 1.8rem; }
-.seal-label { font: 10px Arial, sans-serif; text-transform: uppercase; letter-spacing: .12em; padding: .5rem; }
-.cover-seal:hover { transform: translateY(-3px); }
-.invitation-cover.is-open { pointer-events: none; animation: cover-dismiss var(--inv-opening) forwards; }
-.is-open .cover-door-left { transform: rotateY(-100deg); }
-.is-open .cover-door-right { transform: rotateY(100deg); }
-.is-open .cover-card { opacity: 0; transform: scale(.96); }
-@keyframes cover-dismiss { 0%, 99% { height: 100svh; min-height: 760px; } 100% { height: 0; min-height: 0; visibility: hidden; } }
-/* Ornamentos CSS propios: sin imágenes externas ni dependencias. */
-.invitation[data-decoration='botanical'] .cover-card::before, .invitation[data-decoration='botanical'] .cover-card::after { content: ''; position: absolute; width: 85px; height: 145px; pointer-events: none; border: 1px solid var(--accent); border-radius: 100% 0 100% 0; background: repeating-radial-gradient(ellipse at bottom left, transparent 0 14px, color-mix(in srgb, var(--accent) 35%, transparent) 15px 16px, transparent 17px 25px); }
-.invitation[data-decoration='botanical'] .cover-card::before { top: -30px; left: -14px; transform: rotate(-25deg); }
-.invitation[data-decoration='botanical'] .cover-card::after { bottom: -30px; right: -14px; transform: rotate(155deg); }
-.invitation[data-decoration='stars'] .cover-card::before { content: '✦   ·   ✧'; display: block; font-size: 2rem; color: var(--accent); margin-bottom: 1rem; }
-.invitation[data-decoration='geometric'] .cover-card { border-width: 2px 0; outline: none; }
 .invitation[data-decoration='none'] header > svg { display: none; }
 .invitation[data-template='modern-minimal'] .font-script { letter-spacing: -.035em; }
 .invitation[data-template='modern-minimal'] #inicio h1 { text-align: left; }
@@ -105,7 +82,6 @@ body {
 .invitation[data-template='modern-minimal'] header > svg { width: 3rem; }
 .invitation[data-template='modern-minimal'] section { border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
 .invitation[data-template='festive'] .invitation-cover { background: radial-gradient(circle at 10% 15%, #e8bc8955, transparent 40%), radial-gradient(circle at 85% 85%, #d486ae55, transparent 40%), var(--background); }
-.invitation[data-template='festive'] .cover-door { background: transparent; }
 .invitation[data-template='festive'] h2 { font-style: italic; font-weight: 600; }
 .invitation[data-template='festive'] .scroll-reveal:nth-child(even) { background: color-mix(in srgb, var(--accent) 8%, var(--background)); }
 .invitation[data-plan='express'] { --inv-space: 2rem; }
@@ -118,7 +94,6 @@ body {
 .demo-modules { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; color: #dde9e1; }
 .demo-modules span { padding: .4rem .6rem; border: 1px solid #ffffff33; border-radius: 30px; }
 .preview-mobile { max-width: 390px; margin: 1.5rem auto; box-shadow: 0 0 0 8px #182923; }
-.preview-mobile .invitation-cover { min-height: 760px; }
 @media (min-width: 768px) {
   .invitation-content > .scroll-reveal > section { padding-inline: clamp(2rem, 7vw, 6rem); }
   #ubicacion > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
@@ -137,6 +112,3 @@ body {
   .invitation *, .invitation *::before, .invitation *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .scroll-reveal.reveal-pending { opacity: 1; transform: none; }
 }
-
-.invitation[data-decoration='botanical'] .cover-card::before,
-.invitation[data-decoration='botanical'] .cover-card::after { border-color: var(--secondary); }

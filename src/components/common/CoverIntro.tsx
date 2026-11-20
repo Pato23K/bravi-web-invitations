@@ -1,35 +1,55 @@
 "use client";
-import { useRef, useState } from "react";
+
+import { useState } from "react";
 import { INVITATION_OPEN_EVENT } from "@/lib/events";
 import { Ornament } from "./SectionHeading";
-interface CoverIntroProps { hosts: string[]; eventType: string; shortDate: string }
-/** Portada en el flujo: nunca bloquea el scroll ni captura el foco. */
-export function CoverIntro({ hosts, eventType, shortDate }: CoverIntroProps) {
+import { OPENINGS, type OpeningStyle } from "@/config/openings";
+import { OpeningArtwork } from "./OpeningArtwork";
+import styles from "./Envelope.module.css";
+
+interface CoverIntroProps {
+  variant: OpeningStyle;
+  hosts: string[];
+  eventType: string;
+  shortDate: string;
+}
+
+export function CoverIntro({ variant, hosts, eventType, shortDate }: CoverIntroProps) {
   const [opened, setOpened] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const open = () => {
+  const initials = hosts.map(host => host[0]).join("·");
+  function open() {
+    if (opened) return;
     window.dispatchEvent(new Event(INVITATION_OPEN_EVENT));
     setOpened(true);
     document.getElementById("invitation-content")?.focus({ preventScroll: true });
-  };
+  }
+
   return (
-    <div ref={ref} className={`invitation-cover ${opened ? "is-open" : ""}`} aria-hidden={opened || undefined}
-      onAnimationEnd={(event) => {
-        if (event.target === ref.current && opened) document.getElementById("invitation-content")?.scrollIntoView({ behavior: "instant" });
+    <div className={`invitation-cover ${styles.cover}`} data-open={opened} data-opening={variant} aria-hidden={opened || undefined}
+      onAnimationEnd={event => {
+        if (opened && event.currentTarget === event.target) {
+          document.getElementById("invitation-content")?.scrollIntoView({ behavior: "instant" });
+        }
       }}>
-      <div className="cover-door cover-door-left" aria-hidden="true" />
-      <div className="cover-door cover-door-right" aria-hidden="true" />
-      <div className="cover-card">
-        <span className="cover-kicker">Una fecha. Una historia. Tú.</span>
-        <p className="mt-8 text-xs uppercase tracking-[0.3em]">{eventType}</p>
-        <Ornament className="mx-auto my-6 text-accent" />
-        <p className="cover-names">{hosts.join(" & ")}</p>
-        <p className="mt-6 text-sm tracking-[0.2em]">{shortDate}</p>
-        <button type="button" tabIndex={opened ? -1 : 0} onClick={open} className="cover-seal" aria-label="Abrir invitación">
-          <span aria-hidden="true">{hosts.map(name => name[0]).join(" · ")}</span>
-          <span className="seal-label">Abrir invitación</span>
-        </button>
-        <p className="mt-5 text-xs tracking-widest">Un momento especial comienza aquí</p>
+      <div className={styles.stationery}>
+        <p className={styles.caption}>{eventType}</p>
+        {variant === "envelope" ? <div className={styles.envelope}>
+          <div className={styles.letter} aria-hidden="true">
+            <Ornament className="mx-auto text-accent" />
+            <span>{hosts.join(" & ")}</span>
+          </div>
+          <div className={styles.pocket} aria-hidden="true" />
+          <div className={styles.flap} aria-hidden="true" />
+          <button type="button" onClick={open} tabIndex={opened ? -1 : 0}
+            className={styles.seal} aria-label="Abrir invitación">
+            <span aria-hidden="true">{initials}</span>
+          </button>
+        </div> : <OpeningArtwork variant={variant} initials={initials} onOpen={open} opened={opened} />}
+        <div className={styles.inscription}>
+          <p className={styles.names}>{hosts.join(" & ")}</p>
+          <p className={styles.date}>{shortDate}</p>
+          <p className={styles.hint}>{OPENINGS[variant].hint}</p>
+        </div>
       </div>
     </div>
   );

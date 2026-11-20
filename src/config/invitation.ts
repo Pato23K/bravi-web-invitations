@@ -11,7 +11,7 @@ export const invitation: InvitationConfig = {
   plan: "elite",
   // PERSONALIZAR: cambia la identidad visual sin modificar los módulos funcionales.
   template: "romantic-classic",
-  design: { heroOverlay: 0.5, openingDuration: "1200ms" },
+  design: { heroOverlay: 0.5, openingDuration: "2600ms" },
   hiddenSections: [],
   story: { title: "Todo comenzó con un sí", text: "Una conversación, muchos viajes y pequeños momentos nos trajeron hasta aquí. Hoy elegimos seguir construyendo nuestra historia, rodeados de las personas que queremos. Historia ficticia de demostración." },
 
@@ -35,8 +35,8 @@ export const invitation: InvitationConfig = {
   },
 
   hero: {
-    videoSrc: "/media/hero.mp4",
-    posterSrc: "/media/hero-poster.jpg",
+    videoSrc: "/media/boda.mp4",
+    posterSrc: "/images/demo/ramo.webp",
     eyebrow: "Nos casamos",
   },
 
@@ -70,13 +70,11 @@ export const invitation: InvitationConfig = {
     message:
       "Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, te dejamos estas opciones.",
     bankAccount: {
-      bank: "Banco Ejemplo",
+      bank: "Cuenta de demostración · sin transferencias",
       holder: "Sofía Ejemplo Pérez",
       clabe: "000000000000000000",
     },
-    stores: [
-      { name: "Mesa de regalos de ejemplo", url: "https://example.com/regalos", eventCode: "DEMO" },
-    ],
+    stores: [],
   },
 
   audio: {
@@ -85,11 +83,9 @@ export const invitation: InvitationConfig = {
   },
 
   gallery: [
-    { src: "/images/galeria-1.jpg", alt: "Sofía y Andrés, foto 1" },
-    { src: "/images/galeria-2.jpg", alt: "Sofía y Andrés, foto 2" },
-    { src: "/images/galeria-3.jpg", alt: "Sofía y Andrés, foto 3" },
-    { src: "/images/galeria-4.jpg", alt: "Sofía y Andrés, foto 4" },
-    { src: "/images/galeria-5.jpg", alt: "Sofía y Andrés, foto 5" },
+    { src: "/images/demo/ramo.webp", alt: "Ramo de flores marfil con listón azul" },
+    { src: "/images/demo/anillos.webp", alt: "Argollas sobre terciopelo" },
+    { src: "/images/demo/mesa.webp", alt: "Mesa de recepción a la luz de las velas" },
   ],
 
   dressCode: {
@@ -109,26 +105,23 @@ export const invitation: InvitationConfig = {
   accommodations: [
     {
       name: "Hotel Alameda",
-      imageSrc: "/images/hotel-1.jpg",
+      imageSrc: "/images/demo/patio.webp",
       rate: "Desde $1,850 MXN / noche",
       discountCode: "BODASA27",
       distance: "A 8 min del jardín",
-      bookingUrl: "https://example.com/reservar/hotel-alameda",
     },
     {
       name: "Casa Roma Boutique",
-      imageSrc: "/images/hotel-2.jpg",
+      imageSrc: "/images/demo/habitacion.webp",
       rate: "Desde $2,400 MXN / noche",
       discountCode: "SOFIAANDRES",
       distance: "A 5 min del jardín",
-      bookingUrl: "https://example.com/reservar/casa-roma",
     },
     {
       name: "Suites Reforma",
-      imageSrc: "/images/hotel-3.jpg",
+      imageSrc: "/images/demo/atrio.webp",
       rate: "Desde $1,500 MXN / noche",
       distance: "A 15 min de la parroquia",
-      bookingUrl: "https://example.com/reservar/suites-reforma",
     },
   ],
 };

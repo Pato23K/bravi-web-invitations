@@ -15,7 +15,12 @@ export function RsvpButton({ phone, message, deadline, label = "Confirmar Asiste
     <section id="confirmar" className="px-6 py-16 text-center">
       <SectionHeading eyebrow="R.S.V.P." title="Confirma tu asistencia" subtitle={deadline} />
 
-      <a
+      {/^[0]+$/.test(phone.replace(/\D/g, "")) ? (
+        <details className="mx-auto max-w-md rounded-xl border border-accent p-4">
+          <summary className="cursor-pointer">Ver mensaje de confirmación de muestra</summary>
+          <p className="mt-4">{message}</p>
+        </details>
+      ) : <a
         href={whatsappUrl(phone, message)}
         target="_blank"
         rel="noopener noreferrer"
@@ -23,7 +28,7 @@ export function RsvpButton({ phone, message, deadline, label = "Confirmar Asiste
       >
         <IconWhatsApp className="h-5 w-5" />
         {label}
-      </a>
+      </a>}
     </section>
   );
 }

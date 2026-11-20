@@ -30,6 +30,7 @@ export function InvitationTemplate({ config, planContext }: InvitationTemplatePr
   const templateId = config.template ?? "romantic-classic";
   const template = TEMPLATES[templateId];
   const theme = { ...template.palette, ...(getFeatureAccess(planContext, "customTheme") === "enabled" ? config.theme : {}) };
+  const opening = config.opening ?? template.opening;
   const smartCopy = getFeatureAccess(planContext, "smartCopyClabe") === "enabled";
   const sections: Record<SectionId, ReactNode> = {
     story: config.story ? <section id="historia" className="px-6 py-16 text-center"><SectionHeading eyebrow="Nuestra historia" title={config.story.title} /><p className="mx-auto max-w-xl text-lg leading-relaxed">{config.story.text}</p></section> : null,
@@ -49,7 +50,7 @@ export function InvitationTemplate({ config, planContext }: InvitationTemplatePr
       data-decoration={config.decorations ?? template.decoration}
       style={themeToCssVars(theme, { ...template.design, ...config.design })}>
       <a href="#invitation-content" className="skip-link">Saltar al contenido</a>
-      {(config.opening ?? template.opening) && <CoverIntro hosts={event.hosts} eventType={event.type} shortDate={dates.shortDate} />}
+      {opening && <CoverIntro variant={opening === true ? "envelope" : opening} hosts={event.hosts} eventType={event.type} shortDate={dates.shortDate} />}
       <main id="invitation-content" tabIndex={-1} className="invitation-content">
         {order.map((id) => sections[id] ? (
           <PlanGate key={id} feature={id} planContext={planContext}>

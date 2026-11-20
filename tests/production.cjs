@@ -10,8 +10,48 @@ fs.mkdirSync(artifacts, { recursive: true });
     const browser = await type.launch();
     try {
       const page = await browser.newPage({ viewport: { width: 430, height: 932 } });
-      assert.equal((await page.goto(base + "/demo")).status(), 404);
-      await page.goto(base + "/?plan=express&template=festive&example=quince");
+      assert.equal((await page.goto(base + "/demo?plan=express&example=quince&template=festive")).status(), 200);
+      assert.equal(await page.locator(".invitation").getAttribute("data-plan"), "express");
+      assert.equal(await page.locator("#inicio h1").innerText(), "Valentina");
+      assert.equal(await page.locator("#itinerario").count(), 0);
+      // El panel puede activar cualquier portada, incluso en una plantilla sin apertura por defecto.
+      await page.locator('select[name="template"]').selectOption("modern-minimal");
+      for (const style of ["envelope", "ribbon", "fireworks", "butterfly", "flowers", "minimal"]) {
+        await page.getByLabel("Animación de apertura").selectOption(style);
+        await Promise.all([
+          page.waitForURL(url => url.searchParams.get("opening") === style),
+          page.getByRole("button", { name: "Actualizar vista" }).click(),
+        ]);
+        const cover = page.locator(".invitation-cover");
+        assert.equal(await cover.getAttribute("data-opening"), style);
+        const trigger = cover.getByRole("button", { name: "Abrir invitación" });
+        await trigger.press("Enter");
+        await cover.waitFor({ state: "hidden" });
+        assert.equal(await page.evaluate(() => document.activeElement.id), "invitation-content");
+      }
+      await page.goto(base + "/demo?example=quince&template=modern-minimal&plan=express&opening=flowers");
+      const standaloneHref = await page.getByRole("link", { name: "Abrir esta invitación" }).getAttribute("href");
+      await page.goto(base + standaloneHref);
+      await page.waitForURL(url => url.searchParams.get("standalone") === "1");
+      assert.equal(await page.locator(".demo-toolbar").count(), 0);
+      assert.equal(await page.locator(".invitation-cover").getAttribute("data-opening"), "flowers");
+      assert.equal(await page.locator(".invitation").getAttribute("data-plan"), "express");
+      assert.equal(await page.locator("#inicio h1").innerText(), "Valentina");
+      await page.getByRole("button", { name: "Abrir invitación" }).click();
+      await page.waitForTimeout(400);
+      assert.equal(await page.locator(".invitation-cover").isVisible(), true);
+      await page.locator(".invitation-cover").waitFor({ state: "hidden" });
+      await page.goto(base + "/demo?opening=none");
+      assert.equal(await page.locator(".invitation-cover").count(), 0);
+      await page.goto(base + "/demo?opening=desconocida");
+      assert.equal(await page.locator(".invitation-cover").getAttribute("data-opening"), "envelope");
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto(base + "/demo?opening=fireworks");
+      await page.getByRole("button", { name: "Abrir invitación" }).click();
+      await page.locator(".invitation-cover").waitFor({ state: "hidden", timeout: 1000 });
+      await page.emulateMedia({ reducedMotion: "no-preference" });
+      await page.goto(base + "/?plan=express&template=festive&example=quince&opening=fireworks");
+      assert.equal(await page.locator(".invitation-cover").getAttribute("data-opening"), "envelope");
       assert.equal(await page.locator(".invitation").getAttribute("data-plan"), "elite");
       assert.equal(await page.locator(".invitation").getAttribute("data-template"), "romantic-classic");
       assert.equal(await page.locator(".demo-toolbar").count(), 0);
@@ -30,7 +70,11 @@ fs.mkdirSync(artifacts, { recursive: true });
       assert.equal(await page.locator("#inicio img").count(), 1);
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       await page.goto(base + "/invitaciones/encuentro");
+      assert.equal(await page.locator(".invitation-cover").getAttribute("data-opening"), "minimal");
+      await page.getByRole("button", { name: "Abrir invitación" }).click();
+      await page.locator(".invitation-cover").waitFor({ state: "hidden" });
       await page.evaluate(() => {
+        document.querySelector("audio").pause();
         document.querySelector("audio").play = () => new Promise(() => {});
       });
       await page.getByRole("button", { name: /Reproducir/ }).click();

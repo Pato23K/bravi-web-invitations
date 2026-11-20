@@ -104,7 +104,7 @@ Developed for BRAVI.
 
 La plantilla maestra ahora ofrece **Romantic Classic**, **Modern Minimal** y **Festive**, con los mismos módulos funcionales y permisos por plan.
 
-- Estudio de pruebas: `/demo` (desarrollo; en producción requiere `BRAVI_DEMO_MODE=true` al compilar).
+- Estudio de pruebas: `/demo` permite comparar los ejemplos en desarrollo y producción.
 - Ejemplos públicos: `/invitaciones/boda`, `/invitaciones/quince`, `/invitaciones/encuentro`.
 - Registro de invitaciones: `src/config/examples.ts`.
 - Estilos de plantilla: `src/config/templates.ts`.
@@ -112,4 +112,4 @@ La plantilla maestra ahora ofrece **Romantic Classic**, **Modern Minimal** y **F
 - Guía completa en español: [CUSTOMIZATION.md](CUSTOMIZATION.md).
 - Pruebas: `npm test`, `npm run typecheck`, `npm run build`; navegador: `tests/browser.cjs`.
 
-Los medios heredados son marcadores de posición y los contactos/cuentas de demostración son deliberadamente inválidos. Se deben sustituir antes de entregar una invitación a un cliente.
+Las imágenes ilustrativas están en `public/images/demo`. El RSVP de muestra permite consultar el mensaje y la cuenta bancaria está identificada como ficticia. Se deben sustituir antes de entregar una invitación a un cliente.

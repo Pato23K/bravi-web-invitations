@@ -16,7 +16,7 @@ export const TEMPLATES: Record<TemplateId, VisualTemplate> = {
     design: { headingFont: 'var(--font-pinyon), Georgia, serif', bodyFont: 'var(--font-cormorant), Georgia, serif', radius: "1.5rem", buttonRadius: "999px" },
   },
   "modern-minimal": {
-    name: "Modern Minimal", opening: false, decoration: "geometric",
+    name: "Modern Minimal", opening: true, decoration: "geometric",
     palette: { primary: "#243e3c", accent: "#819a91", background: "#f2f4ef", foreground: "#233330", surface: "#ffffff", onPrimary: "#ffffff" },
     design: { headingFont: 'Georgia, serif', bodyFont: 'Arial, sans-serif', radius: "0.2rem", buttonRadius: "0.2rem", titleSize: "clamp(2rem, 4vw, 3.5rem)", sectionSpace: "6rem", shadow: "none" },
   },

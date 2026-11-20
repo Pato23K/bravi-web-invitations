@@ -32,7 +32,7 @@ export function themeToCssVars(theme: ThemePalette, design: DesignTokens = {}): 
     "--inv-border": design.borderWidth ?? "1px",
     "--inv-shadow": design.shadow ?? "0 12px 40px -24px #40392f55",
     "--inv-motion": design.animationDuration ?? "650ms",
-    "--inv-opening": design.openingDuration ?? "1200ms",
+    "--inv-opening": design.openingDuration ?? "2600ms",
     "--inv-overlay": String(Math.min(0.9, Math.max(0.2, design.heroOverlay ?? 0.5))),
     "--inv-width": design.contentWidth ?? "1080px",
   };

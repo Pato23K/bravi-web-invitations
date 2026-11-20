@@ -63,8 +63,8 @@ const minPlan = { inicio:0, "cuenta-regresiva":0, confirmar:0, historia:1, ubica
       assert.equal(await page.evaluate(() => window.__copied), "000000000000000000");
       await page.getByRole("button", {name:"Ver foto 3"}).click();
       await page.waitForFunction(() => document.querySelector('[aria-label="Ver foto 3"]')?.getAttribute("aria-current") === "true");
-      const whatsapp = new URL(await page.locator("#confirmar a").getAttribute("href"));
-      assert.ok(whatsapp.searchParams.get("text").includes("Sofía"));
+      await page.locator("#confirmar summary").click();
+      assert.ok((await page.locator("#confirmar details").innerText()).includes("Sofía"));
       await page.clock.setFixedTime(new Date("2028-01-01T00:00:00Z"));
       await page.getByText("¡Llegó el gran día!").waitFor();
       await page.goto(base + "/invitaciones/encuentro");

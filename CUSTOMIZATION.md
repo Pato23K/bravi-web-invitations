@@ -33,7 +33,7 @@ export const anaLuis: InvitationConfig = {
 
 Importa `anaLuis` en `src/config/examples.ts` y agrega `"ana-luis": anaLuis` al objeto `invitations`. Quedará disponible en `/invitaciones/ana-luis`. No dupliques páginas. Puedes renombrar este archivo de registro más adelante; hoy contiene tanto los ejemplos como las entradas de clientes.
 
-Para ofrecerlo en el selector de desarrollo, agrega su nombre a `EXAMPLE_LABELS` en el mismo archivo. La invitación de la raíz `/` usa `src/config/invitation.ts`.
+Para ofrecerlo en el selector público de demostración, agrega su nombre a `EXAMPLE_LABELS` en el mismo archivo. La invitación de la raíz `/` usa `src/config/invitation.ts`.
 
 ## 2. Nombres, fecha y textos
 
@@ -89,13 +89,13 @@ Organiza medios en `public/invitations/<cliente>/` y usa rutas que comiencen en 
 
 Usa MP4 H.264 sin pista de audio para el hero, imágenes comprimidas y archivos pequeños. No se incorpora un transcodificador. Las imágenes usan `next/image` con carga diferida, excepto la portada. Si falla un recurso, quedan el poster, la composición de color o una tarjeta de sustitución. Con movimiento reducido no se reproduce video.
 
-Se prefieren archivos locales. Para imágenes externas hay que autorizar explícitamente el dominio en `images.remotePatterns` de `next.config.ts`. No pegues URLs de sitios sin disponer de licencia de uso. Los recursos heredados son marcadores con texto «REEMPLAZAR»; no son fotografías finales.
+Se prefieren archivos locales. Para imágenes externas hay que autorizar explícitamente el dominio en `images.remotePatterns` de `next.config.ts`. No pegues URLs de sitios sin disponer de licencia de uso. Las fotos de muestra en `public/images/demo` son imágenes generadas para ilustrar cada evento.
 
 ## 5. Plantillas
 
 `template` admite `romantic-classic`, `modern-minimal` o `festive`. No cambia la lógica de planes. Romantic Classic usa detalles botánicos y caligrafía; Modern Minimal usa composición editorial, esquinas discretas y tipografía sobria; Festive utiliza curvas, estrellas y una paleta expresiva.
 
-`opening: true | false` habilita o elimina la portada. Si se omite, se usa el valor de la plantilla. `decorations` admite `botanical`, `geometric`, `stars` o `none`.
+`opening` selecciona la portada: `"envelope"` (sobre con sello), `"ribbon"` (moño de seda), `"fireworks"` (fuegos artificiales), `"butterfly"` (mariposa) `"flowers"` (explosión de pétalos) o `"minimal"` (monograma). Por ejemplo, usa `opening: "ribbon"` en la configuración del cliente. También admite `true` para el sobre clásico y `false` para entrar directamente. En `/demo`, elige **Animación de apertura** y pulsa **Actualizar vista** para probarla. **Abrir esta invitación** conserva la selección en un enlace sin panel; no guarda cambios en la configuración del cliente. Horizonte utiliza la apertura minimalista por defecto. Si se omite, se usa el valor de la plantilla. `decorations` admite `botanical`, `geometric`, `stars` o `none`.
 
 ## 6. Planes
 
@@ -156,7 +156,7 @@ El límite de escritorio es `design.contentWidth`. En móvil se usa todo el anch
 
 ## 10. Animaciones y accesibilidad
 
-`design.openingDuration` controla la apertura y `design.animationDuration` las transiciones. Usa duraciones CSS como `"900ms"`. El efecto de puertas usa transforms; la portada está en el flujo y permite seguir desplazándose. Se puede abrir con teclado, clic o toque.
+`design.openingDuration` controla la apertura y `design.animationDuration` las transiciones. Usa duraciones CSS como `"900ms"`. El sello se desprende, la solapa gira y la tarjeta asciende. La animación usa transforms y la portada está en el flujo y permite seguir desplazándose. Se puede abrir con teclado, clic o toque.
 
 Las animaciones y el video respetan `prefers-reduced-motion`. El contenido aparece sin JavaScript; los efectos de scroll son una mejora progresiva. Mantén etiquetas alternativas descriptivas en imágenes y evita textos demasiado extensos en botones.
 
@@ -181,7 +181,7 @@ Pruebas rápidas:
 - `/?plan=elite&example=boda`
 - `/?plan=express&preview=1` muestra módulos bloqueados.
 
-En producción el selector y `/demo` están deshabilitados, salvo `BRAVI_DEMO_MODE=true`. Esta variable debe definirse también al compilar si se quiere generar la ruta demo para un despliegue de pruebas. Las rutas `/invitaciones/<slug>` siempre usan su configuración y no admiten cambios de plan por URL. Antes de publicar, elimina del registro los ejemplos que no quieras ofrecer.
+En producción, comparte `/demo` para comparar ejemplos. El catálogo público se limita a las claves de `EXAMPLE_LABELS`. La variable `BRAVI_DEMO_MODE` habilita también los controles en la raíz. Las rutas `/invitaciones/<slug>` siempre usan su configuración y no admiten cambios de plan por URL. Antes de publicar, elimina del registro los ejemplos que no quieras ofrecer.
 
 La simulación de 390 px es una ayuda de composición; valida también dispositivos o emulación real. No equivale a Safari en un iPhone físico.
 
@@ -206,6 +206,6 @@ El lockfile fija las versiones resueltas a partir de las dependencias originales
 
 ### Pruebas de producción
 
-Después de `npm run build`, inicia `node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3001` sin `BRAVI_DEMO_MODE`. Ejecuta `node tests/production.cjs` con `PLAYWRIGHT_MODULE` configurado. Verifica bloqueo de demo, parámetros ignorados en producción, ancho de 430 px, recursos inexistentes, reproducción pendiente y contenido accesible sin JavaScript. Usa 404 reales para medios porque WebKit puede reproducir mediante una capa nativa que no intercepta Playwright.
+Después de `npm run build`, inicia `node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3001` sin `BRAVI_DEMO_MODE`. Ejecuta `node tests/production.cjs` con `PLAYWRIGHT_MODULE` configurado. Verifica el selector público, parámetros ignorados en producción, ancho de 430 px, recursos inexistentes, reproducción pendiente y contenido accesible sin JavaScript. Usa 404 reales para medios porque WebKit puede reproducir mediante una capa nativa que no intercepta Playwright.
 
 El color opcional `theme.secondary` controla detalles botánicos; si se omite hereda `accent`.

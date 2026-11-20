@@ -37,3 +37,11 @@ next-env.d.ts
 
 # Capturas de validación local
 /artifacts/
+/playwright-report/
+/test-results/
+/playwright/.cache/
+/.playwright-cli/
+/Ref Bodas/
+/ssstik.io_*.mp4
+Thumbs.db
+desktop.ini

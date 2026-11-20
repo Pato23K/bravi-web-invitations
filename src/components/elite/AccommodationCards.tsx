@@ -44,7 +44,7 @@ export function AccommodationCards({ hotels, title = "Hospedaje" }: Accommodatio
                 </p>
               )}
 
-              <a
+              {hotel.bookingUrl && <a
                 href={safeExternalUrl(hotel.bookingUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -52,7 +52,7 @@ export function AccommodationCards({ hotels, title = "Hospedaje" }: Accommodatio
               >
                 Reservar
                 <IconExternal className="h-4 w-4" />
-              </a>
+              </a>}
             </div>
           </li>
         ))}

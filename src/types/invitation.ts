@@ -1,3 +1,4 @@
+import type { OpeningStyle } from "@/config/openings";
 import type { FeatureId, PlanId } from "@/config/plans";
 
 export type TemplateId = "romantic-classic" | "modern-minimal" | "festive";
@@ -146,7 +147,7 @@ export interface Accommodation {
   discountCode?: string;
   /** Ej. "A 10 min del salón". */
   distance?: string;
-  bookingUrl: string;
+  bookingUrl?: string;
 }
 
 /**
@@ -156,7 +157,7 @@ export interface Accommodation {
 export interface InvitationConfig {
   plan: PlanId;
   template?: TemplateId;
-  opening?: boolean;
+  opening?: boolean | OpeningStyle;
   decorations?: "botanical" | "geometric" | "stars" | "none";
   design?: DesignTokens;
   sectionOrder?: SectionId[];
