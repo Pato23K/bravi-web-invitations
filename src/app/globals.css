@@ -112,3 +112,11 @@ body {
   .invitation *, .invitation *::before, .invitation *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .scroll-reveal.reveal-pending { opacity: 1; transform: none; }
 }
+
+/* La invitación se habilita únicamente al terminar su apertura. */
+.invitation-cover:not([data-complete="true"]) ~ .invitation-content {
+  display: none;
+}
+.invitation:has(> .invitation-cover:not([data-complete="true"])) > .skip-link {
+  display: none;
+}

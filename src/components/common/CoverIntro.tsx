@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { INVITATION_OPEN_EVENT } from "@/lib/events";
 import { Ornament } from "./SectionHeading";
 import { OPENINGS, type OpeningStyle } from "@/config/openings";
@@ -16,19 +16,27 @@ interface CoverIntroProps {
 
 export function CoverIntro({ variant, hosts, eventType, shortDate }: CoverIntroProps) {
   const [opened, setOpened] = useState(false);
+  const [complete, setComplete] = useState(false);
+  useEffect(() => {
+    if (complete) {
+      const content = document.getElementById("invitation-content");
+      content?.focus({ preventScroll: true });
+      content?.scrollIntoView({ behavior: "instant" });
+    }
+  }, [complete]);
   const initials = hosts.map(host => host[0]).join("·");
   function open() {
     if (opened) return;
     window.dispatchEvent(new Event(INVITATION_OPEN_EVENT));
     setOpened(true);
-    document.getElementById("invitation-content")?.focus({ preventScroll: true });
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setComplete(true);
   }
 
   return (
-    <div className={`invitation-cover ${styles.cover}`} data-open={opened} data-opening={variant} aria-hidden={opened || undefined}
+    <div className={`invitation-cover ${styles.cover}`} data-open={opened} data-complete={complete} data-opening={variant} aria-hidden={opened || undefined}
       onAnimationEnd={event => {
         if (opened && event.currentTarget === event.target) {
-          document.getElementById("invitation-content")?.scrollIntoView({ behavior: "instant" });
+          setComplete(true);
         }
       }}>
       <div className={styles.stationery}>
