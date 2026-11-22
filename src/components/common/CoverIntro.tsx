@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { INVITATION_OPEN_EVENT } from "@/lib/events";
 import { Ornament } from "./SectionHeading";
 import { OPENINGS, type OpeningStyle } from "@/config/openings";
@@ -17,6 +17,8 @@ interface CoverIntroProps {
 export function CoverIntro({ variant, hosts, eventType, shortDate }: CoverIntroProps) {
   const [opened, setOpened] = useState(false);
   const [complete, setComplete] = useState(false);
+  const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
   useEffect(() => {
     if (complete) {
       const content = document.getElementById("invitation-content");
@@ -24,41 +26,66 @@ export function CoverIntro({ variant, hosts, eventType, shortDate }: CoverIntroP
       content?.scrollIntoView({ behavior: "instant" });
     }
   }, [complete]);
-  const initials = hosts.map(host => host[0]).join("·");
+
+  useEffect(() => {
+    return () => {
+      if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current);
+    };
+  }, []);
+
+  const initials = hosts.map(host => (host && host[0]) || "").filter(Boolean).join("·") || "B";
+
   function open() {
     if (opened) return;
     window.dispatchEvent(new Event(INVITATION_OPEN_EVENT));
     setOpened(true);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setComplete(true);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setComplete(true);
+    } else {
+      // Temporizador de respaldo por si onAnimationEnd no se dispara (ej. pérdida de foco o frame-drop)
+      fallbackTimerRef.current = setTimeout(() => {
+        setComplete(true);
+      }, 3200);
+    }
   }
 
   return (
-    <div className={`invitation-cover ${styles.cover}`} data-open={opened} data-complete={complete} data-opening={variant} aria-hidden={opened || undefined}
-      onAnimationEnd={event => {
-        if (opened && event.currentTarget === event.target) {
-          setComplete(true);
-        }
-      }}>
-      <div className={styles.stationery}>
-        <p className={styles.caption}>{eventType}</p>
-        {variant === "envelope" ? <div className={styles.envelope}>
-          <div className={styles.letter} aria-hidden="true">
-            <Ornament className="mx-auto text-accent" />
-            <span>{hosts.join(" & ")}</span>
+    <>
+      <noscript>
+        <style>{`
+          .invitation-cover { display: none !important; }
+          .invitation-content { display: block !important; }
+          .skip-link { display: block !important; }
+        `}</style>
+      </noscript>
+      <div className={`invitation-cover ${styles.cover}`} data-open={opened} data-complete={complete} data-opening={variant} aria-hidden={opened || undefined}
+        onAnimationEnd={event => {
+          if (opened && event.currentTarget === event.target) {
+            if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current);
+            setComplete(true);
+          }
+        }}>
+        <div className={styles.stationery}>
+          <p className={styles.caption}>{eventType}</p>
+          {variant === "envelope" ? <div className={styles.envelope}>
+            <div className={styles.letter} aria-hidden="true">
+              <Ornament className="mx-auto text-accent" />
+              <span>{hosts.join(" & ")}</span>
+            </div>
+            <div className={styles.pocket} aria-hidden="true" />
+            <div className={styles.flap} aria-hidden="true" />
+            <button type="button" onClick={open} tabIndex={opened ? -1 : 0}
+              className={styles.seal} aria-label="Abrir invitación">
+              <span aria-hidden="true">{initials}</span>
+            </button>
+          </div> : <OpeningArtwork variant={variant} initials={initials} onOpen={open} opened={opened} />}
+          <div className={styles.inscription}>
+            <p className={styles.names}>{hosts.join(" & ")}</p>
+            <p className={styles.date}>{shortDate}</p>
+            <p className={styles.hint}>{OPENINGS[variant].hint}</p>
           </div>
-          <div className={styles.pocket} aria-hidden="true" />
-          <div className={styles.flap} aria-hidden="true" />
-          <button type="button" onClick={open} tabIndex={opened ? -1 : 0}
-            className={styles.seal} aria-label="Abrir invitación">
-            <span aria-hidden="true">{initials}</span>
-          </button>
-        </div> : <OpeningArtwork variant={variant} initials={initials} onOpen={open} opened={opened} />}
-        <div className={styles.inscription}>
-          <p className={styles.names}>{hosts.join(" & ")}</p>
-          <p className={styles.date}>{shortDate}</p>
-          <p className={styles.hint}>{OPENINGS[variant].hint}</p>
         </div>
       </div>
-    </div>
+    </>
   );
 }

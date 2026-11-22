@@ -19,11 +19,45 @@ const pinyon = Pinyon_Script({
   display: "swap",
 });
 
-const hostsLabel = invitation.event.hosts.join(" & ");
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ? process.env.NEXT_PUBLIC_SITE_URL
+  : process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
+const hostsLabel = invitation.event.hosts.filter(Boolean).join(" & ") || invitation.event.type;
+const title = `${hostsLabel} · ${invitation.event.type}`;
+const description = invitation.event.welcomeMessage ?? `Invitación digital para ${hostsLabel}`;
+const ogImage = invitation.hero.posterSrc ?? "/images/demo/ramo.webp";
 
 export const metadata: Metadata = {
-  title: `${hostsLabel} · ${invitation.event.type}`,
-  description: invitation.event.welcomeMessage ?? `Invitación de ${hostsLabel}`,
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: title,
+    template: `%s · BRAVI`,
+  },
+  description,
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    siteName: "BRAVI Invitaciones",
+    title,
+    description,
+    images: [
+      {
+        url: ogImage,
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [ogImage],
+  },
 };
 
 export const viewport: Viewport = {

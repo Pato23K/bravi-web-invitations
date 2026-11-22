@@ -120,3 +120,19 @@ body {
 .invitation:has(> .invitation-cover:not([data-complete="true"])) > .skip-link {
   display: none;
 }
+.invitation-cover[data-complete="true"] {
+  display: none !important;
+}
+
+/* Respaldo para entornos sin JavaScript (rastreadores, bots de WhatsApp/redes y accesibilidad) */
+@media (scripting: none) {
+  .invitation-cover {
+    display: none !important;
+  }
+  .invitation-cover ~ .invitation-content {
+    display: block !important;
+  }
+  .invitation:has(> .invitation-cover) > .skip-link {
+    display: block !important;
+  }
+}
